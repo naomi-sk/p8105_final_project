@@ -1,8 +1,8 @@
 ---
 title: "p8105_group_proposal"
-author: "NSK, ST, Shayne Estill(ske2118), WS"
+author: "NSK, ST (sjt2164), Shayne Estill(ske2118), WS"
 date: "2024-11-06"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
