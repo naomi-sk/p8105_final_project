@@ -1,0 +1,19 @@
+---
+title: "p8105_group_proposal"
+author: "NSK, ST, SE, WS"
+date: "2024-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## R Markdown
+
+```{r}
+
+
+```
