@@ -1,6 +1,6 @@
 ---
 title: "p8105_group_proposal"
-author: "NSK, ST, SE, WS"
+author: "NSK, ST, Shayne Estill(ske2118), WS"
 date: "2024-11-06"
 output: html_document
 ---
