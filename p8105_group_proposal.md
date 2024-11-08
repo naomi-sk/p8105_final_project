@@ -3,7 +3,10 @@ p8105_group_proposal
 NSK, ST (sjt2164), Shayne Estill(ske2118), WS
 2024-11-06
 
-## R Markdown
+## P8105: Group Proposal Submission
+
+Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar
+(ns3782), Serena Ting (sjt2164)
 
 #### Tentative Project Title
 
@@ -41,16 +44,15 @@ York City.
 
 - Environmental data:
 
-\*\* New York City Air Quality (Kaggle:
+New York City Air Quality (Kaggle:
 <https://www.kaggle.com/datasets/sahityasetu/new-york-city-air-quality>)
 
-\*\* NOAA Weather Data for temperature
+NOAA Weather Data for temperature
 (<https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html>)
 
-\*\* NYC Parks and Recreation Data
-(<https://www.nycgovparks.org/about/data>)
+NYC Parks and Recreation Data (<https://www.nycgovparks.org/about/data>)
 
 - Health and demographic data:
 
-\*\* For ED visits and respiratory health outcomes
+For ED visits and respiratory health outcomes
 (<https://a816-health.nyc.gov/hdi/epiquery/visualizations?PageType=ts&PopulationSource=Syndromic&Topic=1&Subtopic=39>)
