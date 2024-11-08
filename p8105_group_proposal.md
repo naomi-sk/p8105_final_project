@@ -1,7 +1,5 @@
 p8105_group_proposal
 ================
-NSK, ST (sjt2164), Shayne Estill(ske2118), WS
-2024-11-06
 
 ## P8105: Group Proposal Submission
 
@@ -56,6 +54,59 @@ NYC Parks and Recreation Data (<https://www.nycgovparks.org/about/data>)
 
 For ED visits and respiratory health outcomes
 (<https://a816-health.nyc.gov/hdi/epiquery/visualizations?PageType=ts&PopulationSource=Syndromic&Topic=1&Subtopic=39>)
+
+#### Intended final product
+
+The intended final project will be a form of a research report,
+summarizing the associations between environmental factors and pediatric
+health outcomes across NYC boroughs. Alternatively, if geared toward
+public health policy, we could also have a final product as a policy
+brief or recommendation for city planners and public health officials.
+
+#### The planned analysis / visualization / coding challenges
+
+There may be some challenges with missing data and merging data between
+different data sources, particularly when working collaboratively and in
+parallel with our team. The main analytical challenge will be building
+appropriate linear models to explore the effects of multiple
+environmental variables (air quality, temperature, green space) on
+health outcomes with the data available to us, while accounting for
+relevant demographic factors.
+
+Our planned analyses:
+
+1.  Data Wrangling: Clean, tidy, and merge environmental, health, and
+    demographic datasets
+
+2.  Visualization (exploratory analysis)
+
+    1.  Descriptive data visualization using basic plots
+
+    2.  Simple maps using borough boundaries
+
+    3.  Paneled plots to compare boroughs
+
+    4.  Interactive dashboard using flexdashboard
+
+3.  Statistical Analysis
+
+    Linear models to test relationships between:
+
+    1.  Air quality and respiratory health outcomes
+
+    2.  Temperature and ED visits
+
+    3.  Effects of greenspace
+
+#### The planned timeline
+
+November 11-15 tidy the data for analysis
+
+November 18-22 Finish the analysis and write the report
+
+November 25-29 finish the report and build a webpage
+
+~ December 6th Finish the rest (screencast, Peer assessment)
 
 #### References
 
