@@ -36,3 +36,21 @@ respiratory outcomes and ED visits. We believe that understanding these
 relationships is crucial for informing urban planning policies and
 public health initiatives aimed at improving children’s health in New
 York City.
+
+#### Anticipated Data Sources
+
+- Environmental data:
+
+\*\* New York City Air Quality (Kaggle:
+<https://www.kaggle.com/datasets/sahityasetu/new-york-city-air-quality>)
+
+\*\* NOAA Weather Data for temperature
+(<https://www.ncei.noaa.gov/metadata/geoportal/rest/metadata/item/gov.noaa.ncdc:C00861/html>)
+
+\*\* NYC Parks and Recreation Data
+(<https://www.nycgovparks.org/about/data>)
+
+- Health and demographic data:
+
+\*\* For ED visits and respiratory health outcomes
+(<https://a816-health.nyc.gov/hdi/epiquery/visualizations?PageType=ts&PopulationSource=Syndromic&Topic=1&Subtopic=39>)
