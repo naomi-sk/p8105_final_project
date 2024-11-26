@@ -57,11 +57,36 @@ For ED visits and respiratory health outcomes
 
 #### Intended final product
 
-The intended final project will be a form of a research report,
-summarizing the associations between environmental factors and pediatric
-health outcomes across NYC boroughs. Alternatively, if geared toward
-public health policy, we could also have a final product as a policy
-brief or recommendation for city planners and public health officials.
+The intended final project will be a form of an interactive webpage
+presenting our research findings, summarizing the associations between
+environmental factors and pediatric health outcomes across NYC boroughs.
+We intend to include the following sections:
+
+1.  Interactive Visualizations:
+
+- Air pollution distribution maps by borough
+
+- Urban heat island effect maps by borough
+
+- Green space accessibility visualization
+
+- Comparative visualizations of environmental determinants and
+  demographic characteristics by borough
+
+2.  Statistical Analysis:
+
+- Linear regression models examining associations between:
+
+- Air quality and respiratory health outcomes stratified by demographic
+  groups
+
+- Temperature patterns and ED visits stratified by demographic groups
+
+- Analysis of effects of green space availability
+
+3.  Discussion of Future Directions for research and practice - in the
+    form of brief recommendations for city planners and public health
+    officials
 
 #### The planned analysis / visualization / coding challenges
 
