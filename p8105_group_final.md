@@ -1,4 +1,4 @@
-p8105_group_proposal
+p8105_group_final
 ================
 
 - Detail how you completed your project
