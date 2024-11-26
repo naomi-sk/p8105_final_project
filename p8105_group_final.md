@@ -1,5 +1,7 @@
 p8105_group_final
 ================
+Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar
+(ns3782), Serena Ting (sjt2164)
 
 - Detail how you completed your project
 - Cover data collection and cleaning, exploratory analyses, alternative
