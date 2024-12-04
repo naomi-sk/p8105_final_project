@@ -340,3 +340,129 @@ than 10 events in the numerator, making the rate unstable).
 The resulting datasets provide clean, consistently formatted data for
 analyzing pediatric asthma-related healthcare utilization across New
 York City boroughs at the ZIP code level for 2016-2018 and 2019-2021.
+
+##### Temperature
+
+<https://open-meteo.com/en/docs/historical-weather-api>
+
+used this website and recorded the coordinates of 5 boroughs and
+extracted the temperatrue information by daily in a timeframe between
+2016 and 2021.
+
+``` r
+library(tidyverse)
+
+manhattan = read_csv("manhattan.csv",skip = 2) |>
+  mutate(indicator = "manhattan") |> 
+  janitor::clean_names()
+```
+
+    ## Rows: 2192 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+    ## date (1): time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+bronx = read_csv("Bronx.csv",skip = 2) |>
+  mutate(indicator = "bronx") |> 
+  janitor::clean_names()
+```
+
+    ## Rows: 2192 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+    ## date (1): time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+brooklyn = read_csv("Brooklyn.csv",skip = 2) |>
+  mutate(indicator = "brooklyn") |> 
+  janitor::clean_names()
+```
+
+    ## Rows: 2192 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+    ## date (1): time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+queens = read_csv("Queens.csv",skip = 2) |>
+  mutate(indicator = "queens") |> 
+  janitor::clean_names()
+```
+
+    ## Rows: 2192 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+    ## date (1): time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+staten_island = read_csv("Staten_Island.csv",skip = 2) |>
+  mutate(indicator = "staten_island") |> 
+  janitor::clean_names()
+```
+
+    ## Rows: 2192 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+    ## date (1): time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+I then merged the data by borough and divided into two groups to
+compare.
+
+``` r
+all_temp = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |> 
+  mutate(indicator = as.factor(indicator)) |>
+  mutate(date = as.Date(time, format = "%Y-%m-%d")) |> 
+  mutate(date_group = ifelse(year(date) %in% 2016:2018, "2016-2018", "2019-2021")) |> 
+  select(temperature_2m_max_c:date_group) |> 
+  group_by(date_group, indicator) |>
+  summarise(avg_temperature = mean(temperature_2m_mean_c, na.rm = TRUE))
+```
+
+    ## `summarise()` has grouped output by 'date_group'. You can override using the
+    ## `.groups` argument.
+
+``` r
+write.csv(all_temp, "NYC_temp.csv", row.names = FALSE)
+
+all_temp_raw = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |> 
+  mutate(indicator = as.factor(indicator))
+
+write.csv(all_temp_raw, "NYC_temp_raw.csv", row.names = FALSE)
+
+ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicator)) +
+  geom_point(size = 3) +  # Creates a scatter plot
+  geom_line(aes(group = indicator), size = 1) +  # Adds lines connecting points by group
+  labs(title = "Average Temperature by Date Group and Indicator",
+       x = "Date Group",
+       y = "Average Temperature") +
+  theme_minimal()
+```
+
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+![](p8105_group_final_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
