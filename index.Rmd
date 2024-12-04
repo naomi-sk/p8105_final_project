@@ -1,0 +1,35 @@
+---
+title: "P8105 Final Project"
+author: Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar (ns3782), Serena Ting (sjt2164)
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+# P8105 Final Project 
+
+With the power of rupert, we will get an A+ on this final. 
+
+![](images/rupert.png)
+
+
+
+
+
+
+
+### Links to raw data
+
+Let's link to where we obtained our raw data from.
+
+[PM2.5 data](https://www.kaggle.com/datasets/sahityasetu/new-york-city-air-quality?resource=download. )
+
+## Visualizations 
+
+[Visualizations](Visualizations.html)
+
+## To make website prettier, reference this 
+
+[bookdown](https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html)

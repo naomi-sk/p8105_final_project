@@ -1,0 +1,14 @@
+name: "Navigation"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Data Preparation"
+      href: p8105_data_preparation.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<you@youremail.com>
+    - icon: fa-github fa-lg
+      href: https://github.com/shayneestill
+output:
+  html_document:
+    theme: cerulean

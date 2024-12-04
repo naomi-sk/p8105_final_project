@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar (ns3782), Serena Ting (sjt2164)" />
+
+
+<title>p8105_data_preparation</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="p8105_data_preparation.html">Data Preparation</a>
+</li>
+<li>
+  <a href="mailto:&lt;you@youremail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/shayneestill">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">p8105_data_preparation</h1>
+<h4 class="author">Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi
+Simon-Kumar (ns3782), Serena Ting (sjt2164)</h4>
+
+</div>
+
+
+<div id="p8105-group-proposal-submission" class="section level2">
+<h2>P8105: Group Proposal Submission</h2>
+<p>Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar
+(ns3782), Serena Ting (sjt2164)</p>
+<div
+id="data-cleaning-pediatric-ed-admissions-and-hospitalizations-data"
+class="section level5">
+<h5>Data Cleaning: Pediatric ED Admissions and Hospitalizations
+data</h5>
+<pre class="r"><code># Load libraries 
+
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code># Load and clean data for 2016-2018
+
+ed_2016_2018 &lt;- read_csv(&quot;data/ed_data_csv.csv&quot;, skip = 2) %&gt;%
+ janitor::clean_names() %&gt;%
+ filter(
+   data_years == &quot;2016-2018&quot;,
+   indicator %in% c(
+     &quot;Asthma emergency department visit rate per 10,000 - aged 0-17 years&quot;,
+     &quot;Asthma hospitalization rate per 10,000 - aged 0-17 years&quot;
+   ),
+   county %in% c(&quot;New York&quot;, &quot;Queens&quot;, &quot;Richmond&quot;, &quot;Kings&quot;, &quot;Bronx&quot;)
+ ) %&gt;%
+ select(data_years, county, zip_code, indicator, zip_code_rate) %&gt;%
+ mutate(
+   indicator = case_when(
+     indicator == &quot;Asthma emergency department visit rate per 10,000 - aged 0-17 years&quot; ~ &quot;ed_visits_rate&quot;,
+     indicator == &quot;Asthma hospitalization rate per 10,000 - aged 0-17 years&quot; ~ &quot;hosp_rate&quot;
+   ),
+   zip_code_rate = case_when(
+     str_detect(zip_code_rate, &quot;\\*&quot;) ~ NA_character_,
+     zip_code_rate == &quot;s&quot; ~ NA_character_,
+     TRUE ~ zip_code_rate
+   )
+ ) %&gt;%
+  rename(borough = county) %&gt;%
+  mutate(
+    borough = case_when(
+      borough == &quot;New York&quot; ~ &quot;Manhattan&quot;,
+      borough == &quot;Kings&quot; ~ &quot;Brooklyn&quot;,
+      borough == &quot;Richmond&quot; ~ &quot;Staten Island&quot;,
+      TRUE ~ borough
+    )
+  )</code></pre>
+<pre><code>## Rows: 44145 Columns: 16
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Component, Indicator, Data Years, Region, County, Numerator (3-yea...
+## dbl  (3): ZIP Code, Region Rate, State Rate
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Load and clean data for 2019-2021
+
+ed_2019_2021 &lt;- read_csv(&quot;data/ed_data_csv.csv&quot;, skip = 2) %&gt;%
+ janitor::clean_names() %&gt;%
+ filter(
+   data_years == &quot;2019-2021&quot;,
+   indicator %in% c(
+     &quot;Asthma emergency department visit rate per 10,000 - aged 0-17 years&quot;,
+     &quot;Asthma hospitalization rate per 10,000 - aged 0-17 years&quot;
+   ),
+   county %in% c(&quot;New York&quot;, &quot;Queens&quot;, &quot;Richmond&quot;, &quot;Kings&quot;, &quot;Bronx&quot;)
+ ) %&gt;%
+ select(data_years, county, zip_code, indicator, zip_code_rate) %&gt;%
+ mutate(
+   indicator = case_when(
+     indicator == &quot;Asthma emergency department visit rate per 10,000 - aged 0-17 years&quot; ~ &quot;ed_visits_rate&quot;,
+     indicator == &quot;Asthma hospitalization rate per 10,000 - aged 0-17 years&quot; ~ &quot;hosp_rate&quot;
+   ),
+   zip_code_rate = case_when(
+     str_detect(zip_code_rate, &quot;\\*&quot;) ~ NA_character_,
+     zip_code_rate == &quot;s&quot; ~ NA_character_,
+     TRUE ~ zip_code_rate
+   )
+ ) %&gt;%
+  rename(borough = county) %&gt;%
+  mutate(
+    borough = case_when(
+      borough == &quot;New York&quot; ~ &quot;Manhattan&quot;,
+      borough == &quot;Kings&quot; ~ &quot;Brooklyn&quot;,
+      borough == &quot;Richmond&quot; ~ &quot;Staten Island&quot;,
+      TRUE ~ borough
+    )
+  )</code></pre>
+<pre><code>## Rows: 44145 Columns: 16
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Component, Indicator, Data Years, Region, County, Numerator (3-yea...
+## dbl  (3): ZIP Code, Region Rate, State Rate
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The data cleaning process involved multiple steps to prepare
+asthma-related health data across two time periods (2016-2018 and
+2019-2021) for analysis. Data was obtained from the New York State
+Asthma Dashboard, which compiles information from multiple sources
+including the Behavioral Risk Factor Surveillance System (BRFSS) and
+Statewide Planning and Research Cooperative System (SPARCS) databases.
+For each time period, data was loaded from a CSV file, skipping the
+first two rows, and variable names were standardized using the janitor
+package’s clean_names() function to ensure consistent formatting.</p>
+<p>The data was then filtered to include two specific health indicators:
+asthma emergency department visit rates and asthma hospitalization rates
+for ages 0-17 years. The geographic scope was limited to five counties
+(New York, Queens, Richmond, Kings, and Bronx), and only relevant
+variables were retained. These variables included data_years (the
+specified three-year period of data collection), county (geographic
+location), zip_code (postal code), indicator (type of healthcare
+utilization), and zip_code_rate (rate per 10,000 children aged 0-17
+years).</p>
+<p>Variables were renamed: “Asthma emergency department visit rate per
+10,000 - aged 0-17 years” to “ed_visits_rate” and “Asthma
+hospitalization rate per 10,000 - aged 0-17 years” to “hosp_rate”.
+County was renamed to borough to reflect NYC terminology. This involved
+changing “New York” to “Manhattan”, “Kings” to “Brooklyn”, and
+“Richmond” to “Staten Island”.</p>
+<p>Missing and unstable values in zip_code_rate were handled in two
+ways: values marked with “s” were converted to NA (indicating data
+suppressed for confidentiality reasons due to not meeting reporting
+criteria), and values marked with an asterisk were converted to NA
+(indicating fewer than 10 events in the numerator, making the rate
+unstable).</p>
+<p>The resulting datasets provide clean, consistently formatted data for
+analyzing pediatric asthma-related healthcare utilization across New
+York City boroughs at the ZIP code level for 2016-2018 and
+2019-2021.</p>
+</div>
+<div id="temperature" class="section level5">
+<h5>Temperature</h5>
+<p><a href="https://open-meteo.com/en/docs/historical-weather-api"
+class="uri">https://open-meteo.com/en/docs/historical-weather-api</a></p>
+<p>used this website and recorded the coordinates of 5 boroughs and
+extracted the temperatrue information by daily in a timeframe between
+2016 and 2021.</p>
+<pre class="r"><code>manhattan = read_csv(&quot;data/manhattan.csv&quot;,skip = 2) |&gt;
+  mutate(indicator = &quot;manhattan&quot;) |&gt; 
+  janitor::clean_names()</code></pre>
+<pre><code>## Rows: 2192 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+## date (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>bronx = read_csv(&quot;data/bronx.csv&quot;,skip = 2) |&gt;
+  mutate(indicator = &quot;bronx&quot;) |&gt; 
+  janitor::clean_names()</code></pre>
+<pre><code>## Rows: 2192 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+## date (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>brooklyn = read_csv(&quot;data/brooklyn.csv&quot;,skip = 2) |&gt;
+  mutate(indicator = &quot;brooklyn&quot;) |&gt; 
+  janitor::clean_names()</code></pre>
+<pre><code>## Rows: 2192 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+## date (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>queens = read_csv(&quot;data/queens.csv&quot;,skip = 2) |&gt;
+  mutate(indicator = &quot;queens&quot;) |&gt; 
+  janitor::clean_names()</code></pre>
+<pre><code>## Rows: 2192 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+## date (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>staten_island = read_csv(&quot;data/staten_island.csv&quot;,skip = 2) |&gt;
+  mutate(indicator = &quot;staten_island&quot;) |&gt; 
+  janitor::clean_names()</code></pre>
+<pre><code>## Rows: 2192 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl  (3): temperature_2m_max (°C), temperature_2m_min (°C), temperature_2m_m...
+## date (1): time
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>I then merged the data by borough and divided into two groups to
+compare.</p>
+<pre class="r"><code>all_temp = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |&gt; 
+  mutate(indicator = as.factor(indicator)) |&gt;
+  mutate(date = as.Date(time, format = &quot;%Y-%m-%d&quot;)) |&gt; 
+  mutate(date_group = ifelse(year(date) %in% 2016:2018, &quot;2016-2018&quot;, &quot;2019-2021&quot;)) |&gt; 
+  select(temperature_2m_max_c:date_group) |&gt; 
+  group_by(date_group, indicator) |&gt;
+  summarise(avg_temperature = mean(temperature_2m_mean_c, na.rm = TRUE))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;date_group&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>write.csv(all_temp, &quot;data/NYC_temp.csv&quot;, row.names = FALSE)
+
+all_temp_raw = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |&gt; 
+  mutate(indicator = as.factor(indicator))
+
+write.csv(all_temp_raw, &quot;data/NYC_temp_raw.csv&quot;, row.names = FALSE)
+
+ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicator)) +
+  geom_point(size = 3) +
+  geom_line(aes(group = indicator), size = 1) +
+  labs(title = &quot;Average Temperature by Date Group and Indicator&quot;,
+       x = &quot;Date Group&quot;,
+       y = &quot;Average Temperature&quot;) +
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="p8105_data_preparation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="greenspace-data" class="section level2">
+<h2>Greenspace Data</h2>
+<p>Greenspace data: <a
+href="https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data"
+class="uri">https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data</a></p>
+<pre class="r"><code>greenspace_clean = greenspace_df |&gt;
+  mutate(
+    borough = case_match(borough, 
+      &quot;R&quot; ~ &quot;Staten Island&quot;,
+      &quot;Q&quot; ~ &quot;Queens&quot;,
+      &quot;X&quot; ~ &quot;Bronx&quot;,
+      &quot;B&quot; ~ &quot;Brooklyn&quot;,
+      &quot;M&quot; ~ &quot;Manhattan&quot;),
+    typecategory = as.factor(typecategory),
+    borough = as.factor(borough)) |&gt;
+  separate(acquisitiondate, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;-&quot;) |&gt;
+  select(year, borough, acres) |&gt; 
+  filter(year &lt; 2022)
+   
+#keep date NA; up to 2019
+
+summary(greenspace_clean)</code></pre>
+<pre><code>##      year                    borough        acres         
+##  Length:1948        Bronx        :393   Min.   :   0.001  
+##  Class :character   Brooklyn     :593   1st Qu.:   0.150  
+##  Mode  :character   Manhattan    :380   Median :   0.737  
+##                     Queens       :426   Mean   :  15.484  
+##                     Staten Island:156   3rd Qu.:   2.078  
+##                                         Max.   :2771.747</code></pre>
+<div id="dataset-1-2016-2018-3-years" class="section level4">
+<h4>Dataset 1: 2016-2018 (3 years)</h4>
+<pre class="r"><code>dataset1_gs = greenspace_clean |&gt;
+  filter(year &lt; 2019 | is.na(year)) |&gt; 
+  group_by(year, borough) |&gt;
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = &quot;drop&quot;)</code></pre>
+</div>
+<div id="dataset-2-2019-2021-3-years" class="section level4">
+<h4>Dataset 2: 2019-2021 (3 years)</h4>
+<pre class="r"><code>dataset2_gs = greenspace_clean |&gt;
+  filter(year &lt; 2022 | is.na(year)) |&gt;
+  group_by(year, borough) |&gt;
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = &quot;drop&quot;)</code></pre>
+</div>
+<div id="pm2.5" class="section level3">
+<h3>PM2.5</h3>
+<pre class="r"><code>library(tidyverse)
+library(rvest)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rvest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>library(readxl)</code></pre>
+<p>Import and clean PM2.5 data from website: <a
+href="https://www.kaggle.com/datasets/sahityasetu/new-york-city-air-quality?resource=download"
+class="uri">https://www.kaggle.com/datasets/sahityasetu/new-york-city-air-quality?resource=download</a>.</p>
+<pre class="r"><code>particulate_matter = 
+  read_csv(&quot;data/Air_Quality_20231208.csv&quot;)</code></pre>
+<pre><code>## Rows: 16218 Columns: 12
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): Name, Measure, Measure Info, Geo Type Name, Geo Place Name, Time Pe...
+## dbl (4): Unique ID, Indicator ID, Geo Join ID, Data Value
+## lgl (1): Message
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The raw data has 16218 rows and 12 columns.</p>
+<p>The columns are Unique ID, Indicator ID, Name, Measure, Measure Info,
+Geo Type Name, Geo Join ID, Geo Place Name, Time Period, Start_Date,
+Data Value, and Message.</p>
+<p>Unique ID: A unique identifier assigned to each row in the
+dataset.</p>
+<p>Indicator ID: A code assigned to each indicator or measure of air
+quality being tracked.</p>
+<p>Name: The name or label given to the indicator or measure being
+tracked.</p>
+<p>Measure: The unit of measurement used to quantify the air quality
+indicator, such as parts per billion (ppb) for ozone or sulfur
+dioxide.</p>
+<p>Measure Info: Additional information about the measurement or
+calculation of the air quality indicator, if applicable.</p>
+<p>Geo Type Name: The type of geographic area being tracked, such as
+community districts (CDs) or boroughs.</p>
+<p>Geo Join ID: A unique identifier assigned to each geographic area
+being tracked.</p>
+<p>Geo Place Name: The name of the specific geographic area being
+tracked, such as Coney Island or the Bronx.</p>
+<p>Time Period: The time period during which the air quality measurement
+was taken, such as a specific season or winter of a particular year.</p>
+<p>Start_Date: The date on which the air quality measurement period
+began.</p>
+<p>Data Value: The value of the air quality indicator for the specific
+geographic area and time period being tracked.</p>
+<p>Message: Additional information or notes about the air quality
+measurement or data value, if applicable.</p>
+<p>As it stands, these data are not “tidy”: Unique ID should be a
+character, as should Indicator ID and Geo Join ID.</p>
+<p>We are interested in PM2.5 so we can filter name to “Fine particles
+(PM 2.5)”. I should note there is name option “Asthma emergency
+department visits due to PM2.5”, “Respiratory hospitalizations due to
+PM2.5 (age 20+)”, “Cardiovascular hospitalizations due to PM2.5 (age
+40+)”, “Deaths due to PM2.5”, “Respiratory hospitalizations due to PM2.5
+(age 20+)”, corresponding to annual rates(18+, 30+, etc.) that could be
+interesting to look at in secondary analyses.</p>
+<p>Further filter to years of interest, we will be looking to compare
+2016-2018 to 2019-2021.</p>
+<p>We will make two datasets, one for analysis in which we will filter
+by borough and create a new column that has the average PM2.5 across
+2016-2018 and 2019-2021.</p>
+<pre class="r"><code>tidy_analysis_pm = 
+  particulate_matter |&gt;
+  janitor::clean_names() |&gt;
+    mutate(
+    unique_id = as.character(unique_id),
+    indicator_id = as.character(indicator_id),
+    geo_join_id = as.character(geo_join_id)) |&gt;
+  filter(name == &quot;Fine particles (PM 2.5)&quot;) |&gt;
+  filter(time_period %in% c(&quot;Annual Average 2016&quot;, &quot;Annual Average 2017&quot;,
+                            &quot;Annual Average 2018&quot;, &quot;Annual Average 2019&quot;,
+                            &quot;Annual Average 2020&quot;, &quot;Annual Average 2021&quot;)) |&gt;
+  filter(geo_type_name == &quot;Borough&quot;) |&gt;
+  select(-unique_id, -indicator_id, -start_date) |&gt;
+    rename(borough = geo_place_name) |&gt;
+  mutate(
+    period = case_when(
+      time_period %in% c(&quot;Annual Average 2016&quot;, &quot;Annual Average 2017&quot;, &quot;Annual Average 2018&quot;) ~ &quot;2016-2018&quot;,
+      time_period %in% c(&quot;Annual Average 2019&quot;, &quot;Annual Average 2020&quot;, &quot;Annual Average 2021&quot;) ~ &quot;2019-2021&quot;
+    )
+  ) |&gt;
+  group_by(borough, period) |&gt;
+  summarize(
+    average_pm2.5 = mean(data_value, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) |&gt;
+  pivot_wider(
+    names_from = period,
+    values_from = average_pm2.5,
+    names_prefix = &quot;avg_pm2.5_&quot;
+  )</code></pre>
+<p>Cleaned analysis PM2.5 dataset has 5 rows and 3 columns.</p>
+<p>I made a new dataset that is by borough and individual years to be
+used in the visualization step.</p>
+<pre class="r"><code>tidy_visualization_pm = 
+  particulate_matter |&gt;
+  janitor::clean_names() |&gt;
+    mutate(
+    unique_id = as.character(unique_id),
+    indicator_id = as.character(indicator_id),
+    geo_join_id = as.character(geo_join_id)) |&gt;
+  filter(name == &quot;Fine particles (PM 2.5)&quot;) |&gt;
+  filter(time_period %in% c(&quot;Annual Average 2016&quot;, &quot;Annual Average 2017&quot;,
+                            &quot;Annual Average 2018&quot;, &quot;Annual Average 2019&quot;,
+                            &quot;Annual Average 2020&quot;, &quot;Annual Average 2021&quot;)) |&gt;
+  filter(geo_type_name == &quot;CD&quot;) |&gt;
+    rename(pm2.5_mcgm3 = data_value) </code></pre>
+<pre class="r"><code>geography = 
+  read_excel(&quot;data/geoid_borough_name_nyc.xlsx&quot;) |&gt;
+  rename(geo_join_id = ID) |&gt;
+  mutate(geo_join_id = 
+           as.character(geo_join_id))</code></pre>
+<pre class="r"><code>pm_for_vis = 
+    left_join(tidy_visualization_pm, geography, by = c(&quot;geo_join_id&quot;)) |&gt;
+    rename(neighborhood = Name) |&gt;
+    rename(borough = Borough) |&gt;
+   select(name, neighborhood, borough, time_period, pm2.5_mcgm3)</code></pre>
+<p>Cleaned visualization PM2.5 dataset has 354 rows and 5 columns.</p>
+<p>This merged on the geo_join_id column for each community district. I
+renamed some variables for clarity and selected the variables of
+interest for visualization.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
