@@ -194,3 +194,149 @@ Sheffield, P. E., Herrera, M. T., Kinnee, E. J., & Clougherty, J. E.
 (2018). Not so little differences: variation in hot weather risk to
 young children in New York City. Public health, 161, 119–126.
 <https://doi.org/10.1016/j.puhe.2018.06.004>
+
+##### Data Cleaning: Pediatric ED Admissions and Hospitalizations data
+
+``` r
+# Load libraries 
+
+library(tidyverse)
+```
+
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+    ## ✔ purrr     1.0.2     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
+# Load and clean data for 2016-2018
+
+ed_2016_2018 <- read_csv("ed_data_csv.csv", skip = 2) %>%
+ janitor::clean_names() %>%
+ filter(
+   data_years == "2016-2018",
+   indicator %in% c(
+     "Asthma emergency department visit rate per 10,000 - aged 0-17 years",
+     "Asthma hospitalization rate per 10,000 - aged 0-17 years"
+   ),
+   county %in% c("New York", "Queens", "Richmond", "Kings", "Bronx")
+ ) %>%
+ select(data_years, county, zip_code, indicator, zip_code_rate) %>%
+ mutate(
+   indicator = case_when(
+     indicator == "Asthma emergency department visit rate per 10,000 - aged 0-17 years" ~ "ed_visits_rate",
+     indicator == "Asthma hospitalization rate per 10,000 - aged 0-17 years" ~ "hosp_rate"
+   ),
+   zip_code_rate = case_when(
+     str_detect(zip_code_rate, "\\*") ~ NA_character_,
+     zip_code_rate == "s" ~ NA_character_,
+     TRUE ~ zip_code_rate
+   )
+ ) %>%
+  rename(borough = county) %>%
+  mutate(
+    borough = case_when(
+      borough == "New York" ~ "Manhattan",
+      borough == "Kings" ~ "Brooklyn",
+      borough == "Richmond" ~ "Staten Island",
+      TRUE ~ borough
+    )
+  )
+```
+
+    ## Rows: 44145 Columns: 16
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (13): Component, Indicator, Data Years, Region, County, Numerator (3-yea...
+    ## dbl  (3): ZIP Code, Region Rate, State Rate
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+# Load and clean data for 2019-2021
+
+ed_2019_2021 <- read_csv("ed_data_csv.csv", skip = 2) %>%
+ janitor::clean_names() %>%
+ filter(
+   data_years == "2019-2021",
+   indicator %in% c(
+     "Asthma emergency department visit rate per 10,000 - aged 0-17 years",
+     "Asthma hospitalization rate per 10,000 - aged 0-17 years"
+   ),
+   county %in% c("New York", "Queens", "Richmond", "Kings", "Bronx")
+ ) %>%
+ select(data_years, county, zip_code, indicator, zip_code_rate) %>%
+ mutate(
+   indicator = case_when(
+     indicator == "Asthma emergency department visit rate per 10,000 - aged 0-17 years" ~ "ed_visits_rate",
+     indicator == "Asthma hospitalization rate per 10,000 - aged 0-17 years" ~ "hosp_rate"
+   ),
+   zip_code_rate = case_when(
+     str_detect(zip_code_rate, "\\*") ~ NA_character_,
+     zip_code_rate == "s" ~ NA_character_,
+     TRUE ~ zip_code_rate
+   )
+ ) %>%
+  rename(borough = county) %>%
+  mutate(
+    borough = case_when(
+      borough == "New York" ~ "Manhattan",
+      borough == "Kings" ~ "Brooklyn",
+      borough == "Richmond" ~ "Staten Island",
+      TRUE ~ borough
+    )
+  )
+```
+
+    ## Rows: 44145 Columns: 16
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (13): Component, Indicator, Data Years, Region, County, Numerator (3-yea...
+    ## dbl  (3): ZIP Code, Region Rate, State Rate
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+The data cleaning process involved multiple steps to prepare
+asthma-related health data across two time periods (2016-2018 and
+2019-2021) for analysis. Data was obtained from the New York State
+Asthma Dashboard, which compiles information from multiple sources
+including the Behavioral Risk Factor Surveillance System (BRFSS) and
+Statewide Planning and Research Cooperative System (SPARCS) databases.
+For each time period, data was loaded from a CSV file, skipping the
+first two rows, and variable names were standardized using the janitor
+package’s clean_names() function to ensure consistent formatting.
+
+The data was then filtered to include two specific health indicators:
+asthma emergency department visit rates and asthma hospitalization rates
+for ages 0-17 years. The geographic scope was limited to five counties
+(New York, Queens, Richmond, Kings, and Bronx), and only relevant
+variables were retained. These variables included data_years (the
+specified three-year period of data collection), county (geographic
+location), zip_code (postal code), indicator (type of healthcare
+utilization), and zip_code_rate (rate per 10,000 children aged 0-17
+years).
+
+Variables were renamed: “Asthma emergency department visit rate per
+10,000 - aged 0-17 years” to “ed_visits_rate” and “Asthma
+hospitalization rate per 10,000 - aged 0-17 years” to “hosp_rate”.
+County was renamed to borough to reflect NYC terminology. This involved
+changing “New York” to “Manhattan”, “Kings” to “Brooklyn”, and
+“Richmond” to “Staten Island”.
+
+Missing and unstable values in zip_code_rate were handled in two ways:
+values marked with “s” were converted to NA (indicating data suppressed
+for confidentiality reasons due to not meeting reporting criteria), and
+values marked with an asterisk were converted to NA (indicating fewer
+than 10 events in the numerator, making the rate unstable).
+
+The resulting datasets provide clean, consistently formatted data for
+analyzing pediatric asthma-related healthcare utilization across New
+York City boroughs at the ZIP code level for 2016-2018 and 2019-2021.
