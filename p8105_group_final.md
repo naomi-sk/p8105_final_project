@@ -483,7 +483,7 @@ greenspace_clean = greenspace_df |>
     borough = as.factor(borough)) |>
   separate(acquisitiondate, into = c("year", "month", "day"), sep = "-") |>
   select(year, borough, acres) |> 
-  filter(year < 2022)
+  filter(year < 2022 | is.na(year))
    
 #keep date NA; up to 2019
 
@@ -491,11 +491,11 @@ summary(greenspace_clean)
 ```
 
     ##      year                    borough        acres         
-    ##  Length:1948        Bronx        :393   Min.   :   0.001  
-    ##  Class :character   Brooklyn     :593   1st Qu.:   0.150  
-    ##  Mode  :character   Manhattan    :380   Median :   0.737  
-    ##                     Queens       :426   Mean   :  15.484  
-    ##                     Staten Island:156   3rd Qu.:   2.078  
+    ##  Length:2038        Bronx        :396   Min.   :   0.001  
+    ##  Class :character   Brooklyn     :618   1st Qu.:   0.140  
+    ##  Mode  :character   Manhattan    :391   Median :   0.713  
+    ##                     Queens       :473   Mean   :  14.950  
+    ##                     Staten Island:160   3rd Qu.:   2.033  
     ##                                         Max.   :2771.747
 
 #### Dataset 1: 2016-2018 (3 years)
@@ -505,6 +505,11 @@ dataset1_gs = greenspace_clean |>
   filter(year < 2019 | is.na(year)) |> 
   group_by(year, borough) |>
   summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+
+dataset1_gs_calc = dataset1_gs |> 
+  group_by(borough) |> 
+  summarise(acres_sum = sum(avg_acres_per_yr_bor, na.rm = TRUE), .groups = "drop") |> 
+  mutate(year_group = "2016-2018")
 ```
 
 #### Dataset 2: 2019-2021 (3 years)
@@ -514,4 +519,38 @@ dataset2_gs = greenspace_clean |>
   filter(year < 2022 | is.na(year)) |>
   group_by(year, borough) |>
   summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+
+dataset2_gs_calc = dataset2_gs |> 
+  group_by(borough) |> 
+  summarise(acres_sum = sum(avg_acres_per_yr_bor, na.rm = TRUE), .groups = "drop") |> 
+  mutate(year_group = "2019-2021")
 ```
+
+#### comparing by the year
+
+``` r
+total_acres = bind_rows(dataset1_gs_calc, dataset2_gs_calc) |>
+  mutate(
+    percentage = case_when(
+      borough == "Manhattan" ~ (acres_sum/300800)*100,
+      borough == "Bronx" ~ (acres_sum/571072)*100,
+      borough == "Brooklyn" ~ (acres_sum/1093312)*100,
+      borough == "Queens" ~ (acres_sum/1349120)*100,
+      borough == "Staten Island" ~ (acres_sum/1127936)*100
+    )
+  ) |> 
+  select(borough, percentage, year_group) |> 
+  pivot_wider(names_from = year_group,
+              values_from = percentage)
+
+total_acres
+```
+
+    ## # A tibble: 5 × 3
+    ##   borough       `2016-2018` `2019-2021`
+    ##   <fct>               <dbl>       <dbl>
+    ## 1 Bronx               0.198       0.219
+    ## 2 Brooklyn            0.164       0.164
+    ## 3 Manhattan           0.570       0.570
+    ## 4 Queens              0.161       0.162
+    ## 5 Staten Island       0.249       0.272
