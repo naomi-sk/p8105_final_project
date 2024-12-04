@@ -526,7 +526,6 @@ dataset2_gs_calc = dataset2_gs |>
   mutate(year_group = "2019-2021")
 ```
 
-<<<<<<< HEAD
 #### comparing by the year
 
 ``` r
@@ -555,7 +554,9 @@ total_acres
     ## 3 Manhattan           0.570       0.570
     ## 4 Queens              0.161       0.162
     ## 5 Staten Island       0.249       0.272
+
 =======
+
 ### PM2.5
 
 ``` r
@@ -723,5 +724,5 @@ Cleaned visualization PM2.5 dataset has 354 rows and 5 columns.
 
 This merged on the geo_join_id column for each community district. I
 renamed some variables for clarity and selected the variables of
-interest for visualization.
->>>>>>> fa1dce32d0a33e55330f43be66c8e85822117900
+interest for visualization. \>\>\>\>\>\>\>
+fa1dce32d0a33e55330f43be66c8e85822117900

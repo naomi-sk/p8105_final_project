@@ -356,7 +356,6 @@ dataset2_gs = greenspace_clean |>
   filter(year < 2022 | is.na(year)) |>
   group_by(year, borough) |>
   summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
-<<<<<<< HEAD
 
 dataset2_gs_calc = dataset2_gs |> 
   group_by(borough) |> 
@@ -385,7 +384,6 @@ total_acres
 ```
 
 =======
-```
 
 ### PM2.5
 
