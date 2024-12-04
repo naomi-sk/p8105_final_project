@@ -217,7 +217,7 @@ library(tidyverse)
 ``` r
 # Load and clean data for 2016-2018
 
-ed_2016_2018 <- read_csv("ed_data_csv.csv", skip = 2) %>%
+ed_2016_2018 <- read_csv("data/ed_data_csv.csv", skip = 2) %>%
  janitor::clean_names() %>%
  filter(
    data_years == "2016-2018",
@@ -262,7 +262,7 @@ ed_2016_2018 <- read_csv("ed_data_csv.csv", skip = 2) %>%
 ``` r
 # Load and clean data for 2019-2021
 
-ed_2019_2021 <- read_csv("ed_data_csv.csv", skip = 2) %>%
+ed_2019_2021 <- read_csv("data/ed_data_csv.csv", skip = 2) %>%
  janitor::clean_names() %>%
  filter(
    data_years == "2019-2021",
@@ -352,7 +352,7 @@ extracted the temperatrue information by daily in a timeframe between
 ``` r
 library(tidyverse)
 
-manhattan = read_csv("manhattan.csv",skip = 2) |>
+manhattan = read_csv("data/manhattan.csv",skip = 2) |>
   mutate(indicator = "manhattan") |> 
   janitor::clean_names()
 ```
@@ -367,7 +367,7 @@ manhattan = read_csv("manhattan.csv",skip = 2) |>
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-bronx = read_csv("Bronx.csv",skip = 2) |>
+bronx = read_csv("data/bronx.csv",skip = 2) |>
   mutate(indicator = "bronx") |> 
   janitor::clean_names()
 ```
@@ -382,7 +382,7 @@ bronx = read_csv("Bronx.csv",skip = 2) |>
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-brooklyn = read_csv("Brooklyn.csv",skip = 2) |>
+brooklyn = read_csv("data/brooklyn.csv",skip = 2) |>
   mutate(indicator = "brooklyn") |> 
   janitor::clean_names()
 ```
@@ -397,7 +397,7 @@ brooklyn = read_csv("Brooklyn.csv",skip = 2) |>
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-queens = read_csv("Queens.csv",skip = 2) |>
+queens = read_csv("data/queens.csv",skip = 2) |>
   mutate(indicator = "queens") |> 
   janitor::clean_names()
 ```
@@ -412,7 +412,7 @@ queens = read_csv("Queens.csv",skip = 2) |>
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-staten_island = read_csv("Staten_Island.csv",skip = 2) |>
+staten_island = read_csv("data/staten_island.csv",skip = 2) |>
   mutate(indicator = "staten_island") |> 
   janitor::clean_names()
 ```
@@ -443,12 +443,12 @@ all_temp = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |>
     ## `.groups` argument.
 
 ``` r
-write.csv(all_temp, "NYC_temp.csv", row.names = FALSE)
+write.csv(all_temp, "data/NYC_temp.csv", row.names = FALSE)
 
 all_temp_raw = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |> 
   mutate(indicator = as.factor(indicator))
 
-write.csv(all_temp_raw, "NYC_temp_raw.csv", row.names = FALSE)
+write.csv(all_temp_raw, "data/NYC_temp_raw.csv", row.names = FALSE)
 
 ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicator)) +
   geom_point(size = 3) +  # Creates a scatter plot
