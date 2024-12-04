@@ -1,6 +1,7 @@
 ---
 title: "p8105_group_proposal"
 output: github_document
+author: Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar (ns3782), Serena Ting (sjt2164)
 ---
 
 ```{r setup, include=FALSE}
@@ -9,11 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
+<<<<<<< HEAD
 check
 
 ## P8105: Group Proposal Submission
 
 Shayne Estill (ske2118) , WooJin Shin (ws2721), Naomi Simon-Kumar (ns3782), Serena Ting (sjt2164)
+=======
+## P8105: Group Proposal 
+>>>>>>> f66938cbc69d35f420f0154174b22a7494a32280
 
 #### Tentative Project Title  
 
