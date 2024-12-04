@@ -304,3 +304,51 @@ ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicat
 
 ```
 
+## Greenspace Data
+
+Greenspace data: https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data
+
+```{r greenspace, include=FALSE}
+greenspace_df = read_csv("Data/Parks_Properties_20241126.csv", na = c("NA", ".", "")) |>
+  janitor::clean_names()
+```
+
+```{r}
+greenspace_clean = greenspace_df |>
+  mutate(
+    borough = case_match(borough, 
+      "R" ~ "Staten Island",
+      "Q" ~ "Queens",
+      "X" ~ "Bronx",
+      "B" ~ "Brooklyn",
+      "M" ~ "Manhattan"),
+    typecategory = as.factor(typecategory),
+    borough = as.factor(borough)) |>
+  separate(acquisitiondate, into = c("year", "month", "day"), sep = "-") |>
+  select(year, borough, acres) |> 
+  filter(year < 2022)
+   
+#keep date NA; up to 2019
+
+summary(greenspace_clean)
+```
+
+
+#### Dataset 1: 2016-2018 (3 years)
+
+```{r}
+dataset1_gs = greenspace_clean |>
+  filter(year < 2019 | is.na(year)) |> 
+  group_by(year, borough) |>
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+```
+
+
+#### Dataset 2: 2019-2021 (3 years)
+
+```{r}
+dataset2_gs = greenspace_clean |>
+  filter(year < 2022 | is.na(year)) |>
+  group_by(year, borough) |>
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+```

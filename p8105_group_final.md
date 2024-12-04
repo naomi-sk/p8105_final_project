@@ -350,8 +350,6 @@ extracted the temperatrue information by daily in a timeframe between
 2016 and 2021.
 
 ``` r
-library(tidyverse)
-
 manhattan = read_csv("data/manhattan.csv",skip = 2) |>
   mutate(indicator = "manhattan") |> 
   janitor::clean_names()
@@ -451,8 +449,8 @@ all_temp_raw = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |>
 write.csv(all_temp_raw, "data/NYC_temp_raw.csv", row.names = FALSE)
 
 ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicator)) +
-  geom_point(size = 3) +  # Creates a scatter plot
-  geom_line(aes(group = indicator), size = 1) +  # Adds lines connecting points by group
+  geom_point(size = 3) +
+  geom_line(aes(group = indicator), size = 1) +
   labs(title = "Average Temperature by Date Group and Indicator",
        x = "Date Group",
        y = "Average Temperature") +
@@ -466,3 +464,54 @@ ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicat
     ## generated.
 
 ![](p8105_group_final_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+## Greenspace Data
+
+Greenspace data:
+<https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data>
+
+``` r
+greenspace_clean = greenspace_df |>
+  mutate(
+    borough = case_match(borough, 
+      "R" ~ "Staten Island",
+      "Q" ~ "Queens",
+      "X" ~ "Bronx",
+      "B" ~ "Brooklyn",
+      "M" ~ "Manhattan"),
+    typecategory = as.factor(typecategory),
+    borough = as.factor(borough)) |>
+  separate(acquisitiondate, into = c("year", "month", "day"), sep = "-") |>
+  select(year, borough, acres) |> 
+  filter(year < 2022)
+   
+#keep date NA; up to 2019
+
+summary(greenspace_clean)
+```
+
+    ##      year                    borough        acres         
+    ##  Length:1948        Bronx        :393   Min.   :   0.001  
+    ##  Class :character   Brooklyn     :593   1st Qu.:   0.150  
+    ##  Mode  :character   Manhattan    :380   Median :   0.737  
+    ##                     Queens       :426   Mean   :  15.484  
+    ##                     Staten Island:156   3rd Qu.:   2.078  
+    ##                                         Max.   :2771.747
+
+#### Dataset 1: 2016-2018 (3 years)
+
+``` r
+dataset1_gs = greenspace_clean |>
+  filter(year < 2019 | is.na(year)) |> 
+  group_by(year, borough) |>
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+```
+
+#### Dataset 2: 2019-2021 (3 years)
+
+``` r
+dataset2_gs = greenspace_clean |>
+  filter(year < 2022 | is.na(year)) |>
+  group_by(year, borough) |>
+  summarise(avg_acres_per_yr_bor = mean(acres, na.rm = TRUE), .groups = "drop")
+```
