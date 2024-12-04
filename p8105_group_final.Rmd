@@ -253,7 +253,6 @@ used this website and recorded the coordinates of 5 boroughs and extracted the t
 
 
 ```{r}
-library(tidyverse)
 
 manhattan = read_csv("data/manhattan.csv",skip = 2) |>
   mutate(indicator = "manhattan") |> 
@@ -296,8 +295,8 @@ all_temp_raw = bind_rows(manhattan, bronx, brooklyn, queens, staten_island) |>
 write.csv(all_temp_raw, "data/NYC_temp_raw.csv", row.names = FALSE)
 
 ggplot(data = all_temp, aes(x = date_group, y = avg_temperature, color = indicator)) +
-  geom_point(size = 3) +  # Creates a scatter plot
-  geom_line(aes(group = indicator), size = 1) +  # Adds lines connecting points by group
+  geom_point(size = 3) +
+  geom_line(aes(group = indicator), size = 1) +
   labs(title = "Average Temperature by Date Group and Indicator",
        x = "Date Group",
        y = "Average Temperature") +
